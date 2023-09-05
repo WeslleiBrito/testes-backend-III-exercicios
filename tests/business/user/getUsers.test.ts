@@ -39,4 +39,33 @@ describe("Testando getUsers", () => {
       },
     ])
   })
+
+  test("Garantindo que tokens inválidos gerem erros", async () => {
+    expect.assertions(1)
+
+    try {
+      const input = GetUsersSchema.parse({
+        token: "token-mock-invalido"
+      })
+  
+      await userBusiness.getUsers(input)
+    } catch (error) {
+      expect(error).toBeDefined()
+    }
+   
+  })
+
+  test("Garantido que só admins acessem os dados dos usuários", async () => {
+    expect.assertions(1)
+
+    try {
+      const input = GetUsersSchema.parse({
+        token: "token-mock-fulano"
+      })
+  
+      await userBusiness.getUsers(input)
+    } catch (error) {
+      expect(error).toBeDefined()
+    }
+  })
 })

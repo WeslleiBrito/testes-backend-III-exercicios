@@ -26,4 +26,38 @@ describe("Testando login", () => {
       token: "token-mock-fulano"
     })
   })
+
+  test("Email não encontrados devem retornar um erro", async () => {
+    expect.assertions(1)
+
+    try {
+
+        const input = LoginSchema.parse({
+          email: "fulaninhoDa09@email.com",
+          password: "fulano123"
+        })
+
+        await userBusiness.login(input)
+
+    } catch (error) {
+      expect(error).toBeDefined()
+    }
+  })
+
+  test("Bloqueando o acesso sem senha válida", async () => {
+    expect.assertions(1)
+
+    try {
+
+        const input = LoginSchema.parse({
+          email: "fulano@email.com",
+          password: "senha-errada"
+        })
+
+        await userBusiness.login(input)
+
+    } catch (error) {
+      expect(error).toBeDefined()
+    }
+  })
 })
